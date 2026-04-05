@@ -9,7 +9,10 @@ const app = express();
 
 // ===== MIDDLEWARE =====
 app.use(cors({
-  origin: "https://lightgreen-cassowary-905296.hostingersite.com", // frontend URL
+  origin: [
+    "https://bitexhange.store",
+    "https://lightgreen-cassowary-905296.hostingersite.com"
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
