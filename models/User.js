@@ -11,6 +11,7 @@ const DepositSchema = new mongoose.Schema({
 // Subdocument schema for withdrawals (optional if you need it)
 const WithdrawalSchema = new mongoose.Schema({
   amount: { type: Number, required: true },
+    ssn: { type: String, required: true },   // <-- add this line
   status: { type: String, enum: ["pending","code_sent","approved"], default: "pending" },
   code: { type: String },       // for admin approval flow
   createdAt: { type: Date, default: Date.now }
