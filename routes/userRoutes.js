@@ -147,6 +147,40 @@ router.post("/withdraw", authMiddleware, async (req, res) => {
 });
 
 // --------------------
+// CONFIRM WITHDRAWAL
+// --------------------
+router.post("/confirm-withdrawal", authMiddleware, async (req, res) => {
+  const { withdrawalId, code } = req.body;
+
+  try {
+    const withdrawal = await Withdrawal.findById(withdrawalId).populate("user");
+
+    if (!withdrawal || withdrawal.status !== "code_sent") {
+      return res.status(400).json({ message: "Invalid withdrawal" });
+    }
+
+    if (withdrawal.code !== code) {
+      return res.status(400).json({ message: "Incorrect admin code" });
+    }
+
+    withdrawal.status = "approved";
+    withdrawal.processedAt = new Date();
+
+    const user = withdrawal.user;
+    user.balance -= withdrawal.amount;
+
+    await user.save();
+    await withdrawal.save();
+
+    res.json({ message: "Withdrawal confirmed!" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// --------------------
 // EXPORT ROUTER
 // --------------------
 module.exports = router;
