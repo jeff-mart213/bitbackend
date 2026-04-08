@@ -50,8 +50,10 @@ router.get("/deposits", adminAuth, async (req, res) => {
 router.get("/withdrawals", adminAuth, async (req, res) => {
   try {
     const withdrawals = await Withdrawal.find({ status: { $in: ["pending", "code_sent"] } }).populate("user");
+    console.log("WITHDRAWALS FOUND:", withdrawals); // 🔍 debug
     res.json(withdrawals);
   } catch (err) {
+    console.error("WITHDRAWALS ERROR:", err);
     res.status(500).json({ message: "Server error" });
   }
 });
