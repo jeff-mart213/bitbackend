@@ -118,4 +118,19 @@ router.put("/withdrawals/:id/approve", adminAuth, async (req, res) => {
   }
 });
 
+// DELETE USER
+router.delete("/users/:id", adminAuth, async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    await User.findByIdAndDelete(userId);
+
+    res.json({ message: "User deleted successfully" });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Failed to delete user" });
+  }
+});
+
 module.exports = router;
