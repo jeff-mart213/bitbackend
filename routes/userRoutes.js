@@ -51,14 +51,17 @@ router.get("/dashboard", authMiddleware, async (req, res) => {
     const deposits = await Deposit.find({ user: req.userId });
     const withdrawals = await Withdrawal.find({ user: req.userId });
 
-    res.json({
-      fullName: user.fullName,
-      email: user.email,
-      balance: user.balance || 0,
-      isVerified: user.isVerified,
-      deposits,
-      withdrawals
-    });
+res.json({
+  fullName: user.fullName,
+  email: user.email,
+  balance: user.balance || 0,
+  totalDeposit: user.totalDeposit || 0,   // ✅ ADD THIS
+  totalWithdraw: user.totalWithdraw || 0, // ✅ ADD THIS
+  bonus: user.bonus || 0,                 // ✅ ADD THIS
+  isVerified: user.isVerified,
+  deposits,
+  withdrawals
+});
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
